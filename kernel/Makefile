@@ -133,6 +133,9 @@ debug: build
 
 all: build
 	@rm -f ../os.bin
+	@cp $(BOOTLOADER) $(BOOTLOADER).copy
+	@dd if=$(KERNEL_BIN) of=$(BOOTLOADER).copy bs=$(K210_BOOTLOADER_SIZE) seek=1
+	@mv $(BOOTLOADER).copy $(KERNEL_BIN)
 	@cp $(KERNEL_BIN) ../os.bin
 
 disasm: kernel
