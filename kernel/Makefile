@@ -133,6 +133,9 @@ debug: build
 		-s -S \
 		-smp $(CPUS)
 
+all: build
+	cp $(KERNEL_BIN) ../os.bin
+
 disasm: kernel
 	@$(OBJDUMP) $(DISASM) $(KERNEL_ELF) | less >> ../disasm.txt
 
