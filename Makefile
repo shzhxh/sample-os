@@ -50,4 +50,7 @@ gdb:
 disasm:
 	@make disasm -C $(OS_DIR)
 
-.PHONY: build sdcard user fs-img run debug gdb disasm
+all:
+	@make all -C $(OS_DIR)
+
+.PHONY: build sdcard user fs-img run debug gdb disasm all
