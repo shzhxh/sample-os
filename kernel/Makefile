@@ -4,17 +4,19 @@ TARGET := riscv64gc-unknown-none-elf
 MODE := release
 KERNEL_ELF := target/$(TARGET)/$(MODE)/os
 KERNEL_BIN := $(KERNEL_ELF).bin
-SDCARD := /dev/sda1
+SDCARD := /dev/sda
 APPS := ../user/src/bin/*
 
 # PLATFORM qemu or k210
-PLATFORM ?= k210
+PLATFORM ?= qemu
 # SBI opensbi or rustsbi
-SBI ?= rustsbi
+SBI ?= opensbi
 # SBI_IMG
 SBI_IMG :=../bootloader/$(SBI)-img/$(SBI)-$(PLATFORM).bin
 # BOOTLOADER
 BOOTLOADER := $(SBI_IMG)
+# LOG
+LOG ?= DEBUG
 
 # FS
 FS_IMG := ../user/target/$(TARGET)/$(MODE)/fs.img
@@ -74,11 +76,6 @@ fat32-img:
 # 	@sudo dd if=/dev/zero of=$(SDCARD) bs=1048576 count=32
 # 	@sudo dd if=$(FS_IMG) of=$(SDCARD)
 
-# fs-img: $(APPS)
-# 	@cd ../user && make build
-# 	@rm -f $(FS_IMG)
-# 	@cd ../myfs-pack && cargo run --release -- -s ../user/src/bin/ -t ../user/target/riscv64gc-unknown-none-elf/release/
-
 kernel:
 	@cp src/linker-$(PLATFORM).ld src/linker.ld
 	cargo build --$(MODE) --features "platform-$(PLATFORM)" --features "$(SBI)"
@@ -101,7 +98,7 @@ ifeq ($(SBI),opensbi)
 		-device virtio-blk-device,drive=x0,bus=virtio-mmio-bus.0 \
 		-smp $(CPUS)
 else
-	@qemu-system-riscv64 \
+	qemu-system-riscv64 \
 		-m 128M \
 		-machine virt \
 		-nographic \
@@ -122,7 +119,7 @@ else
 endif
 
 debug: build
-	@qemu-system-riscv64 \
+	qemu-system-riscv64 \
 		-m 128M \
     	-machine virt \
     	-nographic \
@@ -132,10 +129,6 @@ debug: build
 		-device virtio-blk-device,drive=x0,bus=virtio-mmio-bus.0 \
 		-s -S \
 		-smp $(CPUS)
-
-all: build
-	@rm -f ../os.bin
-	@cp $(KERNEL_BIN) ../os.bin
 
 disasm: kernel
 	@$(OBJDUMP) $(DISASM) $(KERNEL_ELF) | less >> ../disasm.txt
