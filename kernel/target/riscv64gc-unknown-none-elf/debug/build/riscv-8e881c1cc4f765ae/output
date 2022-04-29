@@ -1,0 +1,4 @@
+cargo:rustc-link-lib=static=riscv
+cargo:rustc-link-search=/home/weihuan/WorkSpace/OS/RunOS/kernel/target/riscv64gc-unknown-none-elf/debug/build/riscv-8e881c1cc4f765ae/out
+cargo:rustc-cfg=riscv
+cargo:rustc-cfg=riscv64

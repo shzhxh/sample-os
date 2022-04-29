@@ -8,9 +8,9 @@ SDCARD := /dev/sda1
 APPS := ../user/src/bin/*
 
 # PLATFORM qemu or k210
-PLATFORM ?= qemu
+PLATFORM ?= k210
 # SBI opensbi or rustsbi
-SBI ?= opensbi
+SBI ?= rustsbi
 # SBI_IMG
 SBI_IMG :=../bootloader/$(SBI)-img/$(SBI)-$(PLATFORM).bin
 # BOOTLOADER
@@ -134,7 +134,8 @@ debug: build
 		-smp $(CPUS)
 
 all: build
-	cp $(KERNEL_BIN) ../os.bin
+	@rm -f ../os.bin
+	@cp $(KERNEL_BIN) ../os.bin
 
 disasm: kernel
 	@$(OBJDUMP) $(DISASM) $(KERNEL_ELF) | less >> ../disasm.txt

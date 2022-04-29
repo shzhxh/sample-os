@@ -10,7 +10,7 @@ OSCOMP_TAR_DIR := $(OSCOMP_DIR)/build/riscv64
 OS_DIR := $(DIR)/kernel
 FS_IMG := $(IMG_DIR)/fs.img
 
-PLATFORM ?= qemu
+PLATFORM ?= k210
 
 build:
 	@make build -C $(OS_DIR)
