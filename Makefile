@@ -7,7 +7,7 @@ IMG_DIR := $(USER_DIR)/target/$(TARGET)/$(MODE)
 OS_DIR := $(DIR)/kernel
 FS_IMG := $(IMG_DIR)/fs.img
 
-PLATFORM ?= qemu
+PLATFORM ?= k210
 
 build:
 	@make build -C $(OS_DIR)
@@ -41,4 +41,7 @@ gdb:
 disasm:
 	@make disasm -C $(OS_DIR)
 
-.PHONY: build sdcard user fs run debug gdb disasm fat32-oscomp fat32
+all:
+	@make all -C $(OS_DIR)
+
+.PHONY: build sdcard user fs run debug gdb disasm fat32-oscomp fat32 all
