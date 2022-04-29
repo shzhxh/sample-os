@@ -1,0 +1,1 @@
+{"buildTargets":["build","debug","disasm","fat32-img","fat32-oscomp-img","fs-img","gdb","run","sdcard","user"],"launchTargets":[],"customConfigurationProvider":{"workspaceBrowse":{"browsePath":[],"compilerArgs":[]},"fileIndex":[]}}
