@@ -6,6 +6,7 @@ KERNEL_ELF := target/$(TARGET)/$(MODE)/os
 KERNEL_BIN := $(KERNEL_ELF).bin
 SDCARD := /dev/sda
 APPS := ../user/src/bin/*
+SUBMIT_BIN := ../os.bin
 
 # PLATFORM qemu or k210
 PLATFORM ?= k210
@@ -63,9 +64,9 @@ endif
 
 build: switch-check $(KERNEL_BIN)
 
-fat32-img:
-	@cd ../fat32-pack && ./createfs.sh
-	@cd ../user && ./addtestfile2fs.sh
+# fat32-img:
+# 	@cd ../fat32-pack && ./createfs.sh
+# 	@cd ../user && ./addtestfile2fs.sh
 
 # fat32-oscomp-img:
 # 	cd ../fat32-pack && ./createfs.sh
@@ -132,11 +133,11 @@ debug: build
 		-smp $(CPUS)
 
 all: build
-	@rm -f ../os.bin
+	@rm -f $(SUBMIT_BIN)
 	@cp $(BOOTLOADER) $(BOOTLOADER).copy
 	@dd if=$(KERNEL_BIN) of=$(BOOTLOADER).copy bs=$(K210_BOOTLOADER_SIZE) seek=1
 	@mv $(BOOTLOADER).copy $(KERNEL_BIN)
-	@cp $(KERNEL_BIN) ../os.bin
+	@cp $(KERNEL_BIN) $(SUBMIT_BIN)
 
 disasm: kernel
 	@$(OBJDUMP) $(DISASM) $(KERNEL_ELF) | less >> ../disasm.txt
@@ -149,5 +150,6 @@ gdb:
 
 clean:
 	@cargo clean
+	@rm -f $(SUBMIT_BIN)
 
 .PHONY: switch-check build fs-img sdcard kernel run debug disasm gdb clean all

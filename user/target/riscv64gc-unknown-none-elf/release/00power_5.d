@@ -1,1 +1,0 @@
-/home/weihuan/WorkSpace/OS/MyOS/user/target/riscv64gc-unknown-none-elf/release/00power_5: /home/weihuan/WorkSpace/OS/MyOS/user/src/bin/00power_5.rs /home/weihuan/WorkSpace/OS/MyOS/user/src/console.rs /home/weihuan/WorkSpace/OS/MyOS/user/src/lang_items.rs /home/weihuan/WorkSpace/OS/MyOS/user/src/lib.rs /home/weihuan/WorkSpace/OS/MyOS/user/src/syscall.rs

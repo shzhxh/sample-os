@@ -44,4 +44,8 @@ disasm:
 all:
 	@make all -C $(OS_DIR)
 
-.PHONY: build sdcard user fs run debug gdb disasm fat32-oscomp fat32 all
+clean:
+	@make clean -C $(USER_DIR)
+	@make clean -C $(OS_DIR)
+
+.PHONY: build sdcard user fs run debug gdb disasm fat32-oscomp fat32 all clean

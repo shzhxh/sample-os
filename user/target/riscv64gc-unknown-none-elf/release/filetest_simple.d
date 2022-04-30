@@ -1,1 +1,0 @@
-/home/weihuan/WorkSpace/OS/MyOS/user/target/riscv64gc-unknown-none-elf/release/filetest_simple: /home/weihuan/WorkSpace/OS/MyOS/user/src/bin/filetest_simple.rs /home/weihuan/WorkSpace/OS/MyOS/user/src/console.rs /home/weihuan/WorkSpace/OS/MyOS/user/src/lang_items.rs /home/weihuan/WorkSpace/OS/MyOS/user/src/lib.rs /home/weihuan/WorkSpace/OS/MyOS/user/src/syscall.rs
