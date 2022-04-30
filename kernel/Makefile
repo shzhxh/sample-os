@@ -57,9 +57,9 @@ DISASM ?= -all -S
 
 switch-check:
 ifeq ($(PLATFORM), qemu)
-	(which last-qemu) || (rm -f last-k210 && touch last-qemu && make clean)
+	@(which last-qemu) || (rm -f last-k210 && touch last-qemu && make clean)
 else ifeq ($(PLATFORM), k210)
-	(which last-k210) || (rm -f last-qemu && touch last-k210 && make clean)
+	@(which last-k210) || (rm -f last-qemu && touch last-k210 && make clean)
 endif
 
 env:
@@ -117,7 +117,7 @@ else
 		-smp $(CPUS)
 endif
 else
-	(which $(K210-BURNER)) || (cd .. && git clone https://github.com/sipeed/kflash.py.git && mv kflash.py tools)
+	@(which $(K210-BURNER)) || (cd .. && git clone https://github.com/sipeed/kflash.py.git && mv kflash.py tools)
 	@cp $(BOOTLOADER) $(BOOTLOADER).copy
 	@dd if=$(KERNEL_BIN) of=$(BOOTLOADER).copy bs=$(K210_BOOTLOADER_SIZE) seek=1
 	@mv $(BOOTLOADER).copy $(KERNEL_BIN)

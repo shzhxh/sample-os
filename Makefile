@@ -29,7 +29,7 @@ else
 	@cd oscomp && ./addoscompfile2fs.sh k210
 endif
 
-run:
+run: user
 	@make run -C $(OS_DIR)
 
 debug: fat32-oscomp

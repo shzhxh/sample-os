@@ -1,6 +1,4 @@
 make all --print-data-base --no-builtin-variables --no-builtin-rules --question
-make: *** No rule to make target 'all'.  Stop.
-
 # GNU Make 4.2.1
 # Built for x86_64-pc-linux-gnu
 # Copyright (C) 1988-2016 Free Software Foundation, Inc.
@@ -8,7 +6,7 @@ make: *** No rule to make target 'all'.  Stop.
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Sat Apr 30 14:03:27 2022
+# Make data base, printed on Sat Apr 30 16:41:51 2022
 
 # Variables
 
@@ -43,7 +41,7 @@ GDMSESSION = ubuntu
 # environment
 XMODIFIERS = @im=fcitx
 # makefile
-CURDIR := /home/weihuan/WorkSpace/OS/MyOS
+CURDIR := /home/weihuan/WorkSpace/OS/RunOS
 # makefile
 SHELL = /bin/sh
 # environment
@@ -79,7 +77,7 @@ MANAGERPID = 2559
 # environment
 CLUTTER_IM_MODULE = fcitx
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-093e925c-35ac-4175-a7c2-18417d9e2151.sock
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-051a8547-ca63-4690-a546-cd5ae32d07f3.sock
 # environment
 LC_NAME = zh_CN.UTF-8
 # environment
@@ -107,7 +105,7 @@ INVOCATION_ID = f002ae697c134dc5ac6b4564e0e60e2a
 # default
 .FEATURES := target-specific order-only second-expansion else-if shortest-stem undefine oneshell archives jobserver output-sync check-symlink load
 # makefile (from 'Makefile', line 3)
-DIR := /home/weihuan/WorkSpace/OS/MyOS
+DIR := /home/weihuan/WorkSpace/OS/RunOS
 # environment
 LS_COLORS = 
 # environment
@@ -123,13 +121,13 @@ DISPLAY = :1
 # environment
 CONDA_EXE = /home/weihuan/anaconda3/bin/conda
 # makefile (from 'Makefile', line 4)
-FAT32_PACK_DIR := /home/weihuan/WorkSpace/OS/MyOS/fat32-pack
+FAT32_PACK_DIR := /home/weihuan/WorkSpace/OS/RunOS/fat32-pack
 # environment
 GTK_IM_MODULE = fcitx
 # environment
 VSCODE_PIPE_LOGGING = true
 # environment
-PWD = /home/weihuan/WorkSpace/OS/MyOS
+PWD = /home/weihuan/WorkSpace/OS/RunOS
 # makefile (from 'Makefile', line 2)
 MODE := release
 # default
@@ -141,13 +139,13 @@ ORIGINAL_XDG_CURRENT_DESKTOP = ubuntu:GNOME
 # environment
 GTK_MODULES = gail:atk-bridge
 # makefile (from 'Makefile', line 7)
-OS_DIR := /home/weihuan/WorkSpace/OS/MyOS/kernel
+OS_DIR := /home/weihuan/WorkSpace/OS/RunOS/kernel
 # environment
 VSCODE_AMD_ENTRYPOINT = vs/workbench/api/node/extensionHostProcess
 # environment
 HOME = /home/weihuan
 # makefile (from 'Makefile', line 6)
-IMG_DIR := /home/weihuan/WorkSpace/OS/MyOS/user/target/riscv64gc-unknown-none-elf/release
+IMG_DIR := /home/weihuan/WorkSpace/OS/RunOS/user/target/riscv64gc-unknown-none-elf/release
 # environment
 LD_LIBRARY_PATH = /usr/local/cuda-10.1/lib64
 # environment
@@ -217,7 +215,7 @@ MFLAGS = -pqrR
 # automatic
 +D = $(patsubst %/,%,$(dir $+))
 # makefile (from 'Makefile', line 8)
-FS_IMG := /home/weihuan/WorkSpace/OS/MyOS/user/target/riscv64gc-unknown-none-elf/release/fs.img
+FS_IMG := /home/weihuan/WorkSpace/OS/RunOS/user/target/riscv64gc-unknown-none-elf/release/fs.img
 # environment
 GDK_BACKEND = x11
 # environment
@@ -249,7 +247,7 @@ QT4_IM_MODULE = fcitx
 # automatic
 ^F = $(notdir $^)
 # makefile (from 'Makefile', line 5)
-USER_DIR := /home/weihuan/WorkSpace/OS/MyOS/user
+USER_DIR := /home/weihuan/WorkSpace/OS/RunOS/user
 # default
 SUFFIXES := 
 # environment
@@ -277,16 +275,16 @@ _CE_CONDA =
 # environment
 LANG = C
 # variable set hash-table stats:
-# Load=132/1024=13%, Rehash=0, Collisions=23/169=14%
+# Load=132/1024=13%, Rehash=0, Collisions=25/173=14%
 
 # Pattern-specific Variable Values
+ 
 
 # No pattern-specific variable values.
 
 # Directories
 
-# . (device 66310, inode 3414746): 17 files, no impossibilities.
- 
+# . (device 66310, inode 23074675): 17 files, no impossibilities.
 
 # 17 files, no impossibilities in 1 directories.
 
@@ -299,8 +297,28 @@ LANG = C
 user:
 #  Phony target (prerequisite of .PHONY).
 #  Implicit rule search has not been done.
+#  Implicit/static pattern stem: ''
 #  File does not exist.
-#  File has not been updated.
+#  File has been updated.
+#  Needs to be updated (-q is set).
+# automatic
+# @ := user
+# automatic
+# % := 
+# automatic
+# * := 
+# automatic
+# + := 
+# automatic
+# | := 
+# automatic
+# < := 
+# automatic
+# ^ := 
+# automatic
+# ? := 
+# variable set hash-table stats:
+# Load=8/32=25%, Rehash=0, Collisions=1/12=8%
 #  recipe to execute (from 'Makefile', line 22):
 	@make build -C $(USER_DIR)
 
@@ -309,8 +327,6 @@ sdcard:
 #  Implicit rule search has not been done.
 #  File does not exist.
 #  File has not been updated.
-#  recipe to execute (from 'Makefile', line 16):
-	@make sdcard -C $(OS_DIR)
 
 gdb:
 #  Phony target (prerequisite of .PHONY).
@@ -320,14 +336,24 @@ gdb:
 #  recipe to execute (from 'Makefile', line 39):
 	@make gdb -C $(OS_DIR)
 
-# Not a target:
-all:
+all: user
 #  Command line target.
-#  Implicit rule search has been done.
+#  Implicit rule search has not been done.
 #  File does not exist.
+#  File has been updated.
+#  Needs to be updated (-q is set).
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/4=0%
+#  recipe to execute (from 'Makefile', line 45):
+	@make all -C $(OS_DIR)
+
+.PHONY: build sdcard user fs run debug gdb disasm fat32-oscomp fat32 clean
+#  Implicit rule search has not been done.
+#  Modification time never checked.
 #  File has not been updated.
 
-.PHONY: build sdcard user fs run debug gdb disasm fat32-oscomp fat32
+# Not a target:
+.SUFFIXES:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
@@ -335,7 +361,7 @@ all:
 # Not a target:
 Makefile:
 #  Implicit rule search has been done.
-#  Last modified 2022-04-29 22:37:06.401097701
+#  Last modified 2022-04-30 16:15:51.269723989
 #  File has been updated.
 #  Successfully updated.
 
@@ -369,14 +395,24 @@ run:
 #  recipe to execute (from 'Makefile', line 33):
 	@make run -C $(OS_DIR)
 
+clean:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 48):
+	@rm -rf ./fs
+	@make clean -C $(USER_DIR)
+	@make clean -C $(OS_DIR)
+
 fat32-oscomp: user
 #  Phony target (prerequisite of .PHONY).
 #  Implicit rule search has not been done.
 #  File does not exist.
 #  File has not been updated.
 #  recipe to execute (from 'Makefile', line 26):
-	cd fat32-pack && ./createfs.sh
-	cd oscomp && ./addoscompfile2fs.sh qemu
+	@./createfs.sh
+	@cd oscomp && ./addoscompfile2fs.sh qemu
 
 fs:
 #  Phony target (prerequisite of .PHONY).
@@ -389,8 +425,6 @@ fat32:
 #  Implicit rule search has not been done.
 #  File does not exist.
 #  File has not been updated.
-#  recipe to execute (from 'Makefile', line 19):
-	@make fat32-img -C $(OS_DIR)
 
 disasm:
 #  Phony target (prerequisite of .PHONY).
@@ -401,19 +435,19 @@ disasm:
 	@make disasm -C $(OS_DIR)
 
 # files hash-table stats:
-# Load=15/1024=1%, Rehash=0, Collisions=2/37=5%
+# Load=16/1024=2%, Rehash=0, Collisions=2/42=5%
 # VPATH Search Paths
 
 # No 'vpath' search paths.
 
 # No general ('VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 31 / storage = 250 B / avg = 8 B
-# current buf: size = 8162 B / used = 250 B / count = 31 / avg = 8 B
+# strcache buffers: 1 (0) / strings = 32 / storage = 256 B / avg = 8 B
+# current buf: size = 8162 B / used = 256 B / count = 32 / avg = 8 B
 
-# strcache performance: lookups = 58 / hit rate = 46%
+# strcache performance: lookups = 61 / hit rate = 47%
 # hash-table stats:
-# Load=31/8192=0%, Rehash=0, Collisions=1/58=2%
-# Finished Make data base on Sat Apr 30 14:03:27 2022
+# Load=32/8192=0%, Rehash=0, Collisions=1/61=2%
+# Finished Make data base on Sat Apr 30 16:41:51 2022
 
  
