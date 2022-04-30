@@ -62,7 +62,13 @@ else ifeq ($(PLATFORM), k210)
 	(which last-k210) || (rm -f last-qemu && touch last-k210 && make clean)
 endif
 
-build: switch-check $(KERNEL_BIN)
+env:
+	@(rustup target list | grep "riscv64gc-unknown-none-elf (installed)") || rustup target add $(TARGET)
+	@cargo install cargo-binutils --vers =0.3.3
+	@rustup component add rust-src
+	@rustup component add llvm-tools-preview
+
+build: env switch-check $(KERNEL_BIN)
 
 # fat32-img:
 # 	@cd ../fat32-pack && ./createfs.sh
