@@ -23,10 +23,10 @@ user:
 
 fat32-oscomp: user
 ifeq ($(PLATFORM), qemu)
-	./createfs.sh
-	cd oscomp && ./addoscompfile2fs.sh qemu
+	@./createfs.sh
+	@cd oscomp && ./addoscompfile2fs.sh qemu
 else
-	cd oscomp && ./addoscompfile2fs.sh k210
+	@cd oscomp && ./addoscompfile2fs.sh k210
 endif
 
 run:

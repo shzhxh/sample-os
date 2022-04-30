@@ -80,7 +80,7 @@ build: switch-check $(KERNEL_BIN)
 kernel:
 	@rustup target add riscv64gc-unknown-none-elf
 	@cp src/linker-$(PLATFORM).ld src/linker.ld
-	cargo build --$(MODE) --features "platform-$(PLATFORM)" --features "$(SBI)"
+	@cargo build --$(MODE) --features "platform-$(PLATFORM)" --features "$(SBI)"
 	@rm src/linker.ld
 # RUSTFLAGS="-C link-arg=-Tsrc/linker.ld -g"
 
@@ -90,7 +90,7 @@ $(KERNEL_BIN): kernel
 run: build
 ifeq ($(PLATFORM),qemu)
 ifeq ($(SBI),opensbi)
-	qemu-system-riscv64 \
+	@qemu-system-riscv64 \
 		-m 128M \
 		-machine virt \
 		-nographic \
@@ -100,7 +100,7 @@ ifeq ($(SBI),opensbi)
 		-device virtio-blk-device,drive=x0,bus=virtio-mmio-bus.0 \
 		-smp $(CPUS)
 else
-	qemu-system-riscv64 \
+	@qemu-system-riscv64 \
 		-m 128M \
 		-machine virt \
 		-nographic \
@@ -121,7 +121,7 @@ else
 endif
 
 debug: build
-	qemu-system-riscv64 \
+	@qemu-system-riscv64 \
 		-m 128M \
     	-machine virt \
     	-nographic \
@@ -143,7 +143,7 @@ disasm: kernel
 	@$(OBJDUMP) $(DISASM) $(KERNEL_ELF) | less >> ../disasm.txt
 
 gdb:
-	gdb-multiarch \
+	@gdb-multiarch \
     -ex 'file target/riscv64gc-unknown-none-elf/release/os' \
     -ex 'set arch riscv:rv64' \
     -ex 'target remote localhost:1234'

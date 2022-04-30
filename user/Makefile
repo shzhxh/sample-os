@@ -10,6 +10,7 @@ OBJDUMP := rust-objdump --arch-name=riscv64
 OBJCOPY := rust-objcopy --binary-architecture=riscv64
 
 elf: $(APPS)
+	@rustup target add riscv64gc-unknown-none-elf
 	@cargo build --release
 
 binary: elf
