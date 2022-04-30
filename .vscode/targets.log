@@ -1,4 +1,6 @@
 make all --print-data-base --no-builtin-variables --no-builtin-rules --question
+make: *** No rule to make target 'all'.  Stop.
+
 # GNU Make 4.2.1
 # Built for x86_64-pc-linux-gnu
 # Copyright (C) 1988-2016 Free Software Foundation, Inc.
@@ -6,7 +8,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Sat Apr 30 14:03:14 2022
+# Make data base, printed on Sat Apr 30 14:03:27 2022
 
 # Variables
 
@@ -41,7 +43,7 @@ GDMSESSION = ubuntu
 # environment
 XMODIFIERS = @im=fcitx
 # makefile
-CURDIR := /home/weihuan/WorkSpace/OS/RunOS
+CURDIR := /home/weihuan/WorkSpace/OS/MyOS
 # makefile
 SHELL = /bin/sh
 # environment
@@ -77,7 +79,7 @@ MANAGERPID = 2559
 # environment
 CLUTTER_IM_MODULE = fcitx
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-db04af94-ea06-4a55-9b87-058d1505da80.sock
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-093e925c-35ac-4175-a7c2-18417d9e2151.sock
 # environment
 LC_NAME = zh_CN.UTF-8
 # environment
@@ -105,7 +107,7 @@ INVOCATION_ID = f002ae697c134dc5ac6b4564e0e60e2a
 # default
 .FEATURES := target-specific order-only second-expansion else-if shortest-stem undefine oneshell archives jobserver output-sync check-symlink load
 # makefile (from 'Makefile', line 3)
-DIR := /home/weihuan/WorkSpace/OS/RunOS
+DIR := /home/weihuan/WorkSpace/OS/MyOS
 # environment
 LS_COLORS = 
 # environment
@@ -121,13 +123,13 @@ DISPLAY = :1
 # environment
 CONDA_EXE = /home/weihuan/anaconda3/bin/conda
 # makefile (from 'Makefile', line 4)
-FAT32_PACK_DIR := /home/weihuan/WorkSpace/OS/RunOS/fat32-pack
+FAT32_PACK_DIR := /home/weihuan/WorkSpace/OS/MyOS/fat32-pack
 # environment
 GTK_IM_MODULE = fcitx
 # environment
 VSCODE_PIPE_LOGGING = true
 # environment
-PWD = /home/weihuan/WorkSpace/OS/RunOS
+PWD = /home/weihuan/WorkSpace/OS/MyOS
 # makefile (from 'Makefile', line 2)
 MODE := release
 # default
@@ -139,13 +141,13 @@ ORIGINAL_XDG_CURRENT_DESKTOP = ubuntu:GNOME
 # environment
 GTK_MODULES = gail:atk-bridge
 # makefile (from 'Makefile', line 7)
-OS_DIR := /home/weihuan/WorkSpace/OS/RunOS/kernel
+OS_DIR := /home/weihuan/WorkSpace/OS/MyOS/kernel
 # environment
 VSCODE_AMD_ENTRYPOINT = vs/workbench/api/node/extensionHostProcess
 # environment
 HOME = /home/weihuan
 # makefile (from 'Makefile', line 6)
-IMG_DIR := /home/weihuan/WorkSpace/OS/RunOS/user/target/riscv64gc-unknown-none-elf/release
+IMG_DIR := /home/weihuan/WorkSpace/OS/MyOS/user/target/riscv64gc-unknown-none-elf/release
 # environment
 LD_LIBRARY_PATH = /usr/local/cuda-10.1/lib64
 # environment
@@ -215,17 +217,19 @@ MFLAGS = -pqrR
 # automatic
 +D = $(patsubst %/,%,$(dir $+))
 # makefile (from 'Makefile', line 8)
-FS_IMG := /home/weihuan/WorkSpace/OS/RunOS/user/target/riscv64gc-unknown-none-elf/release/fs.img
+FS_IMG := /home/weihuan/WorkSpace/OS/MyOS/user/target/riscv64gc-unknown-none-elf/release/fs.img
 # environment
 GDK_BACKEND = x11
 # environment
 LC_PAPER = zh_CN.UTF-8
 # environment
+NO_AT_BRIDGE = 1
+# environment
 QT_ACCESSIBILITY = 1
 # environment
 DEFAULTS_PATH = /usr/share/gconf/ubuntu.default.path
 # makefile (from 'Makefile', line 10)
-PLATFORM = k210
+PLATFORM = qemu
 # 'override' directive
 .SHELLSTATUS := 0
 # default
@@ -245,7 +249,7 @@ QT4_IM_MODULE = fcitx
 # automatic
 ^F = $(notdir $^)
 # makefile (from 'Makefile', line 5)
-USER_DIR := /home/weihuan/WorkSpace/OS/RunOS/user
+USER_DIR := /home/weihuan/WorkSpace/OS/MyOS/user
 # default
 SUFFIXES := 
 # environment
@@ -273,7 +277,7 @@ _CE_CONDA =
 # environment
 LANG = C
 # variable set hash-table stats:
-# Load=131/1024=13%, Rehash=0, Collisions=23/172=13%
+# Load=132/1024=13%, Rehash=0, Collisions=23/169=14%
 
 # Pattern-specific Variable Values
 
@@ -281,9 +285,9 @@ LANG = C
 
 # Directories
 
-# . (device 66310, inode 23074675): 17 files, no impossibilities.
-
+# . (device 66310, inode 3414746): 17 files, no impossibilities.
  
+
 # 17 files, no impossibilities in 1 directories.
 
 # Implicit Rules
@@ -316,42 +320,14 @@ gdb:
 #  recipe to execute (from 'Makefile', line 39):
 	@make gdb -C $(OS_DIR)
 
+# Not a target:
 all:
-#  Phony target (prerequisite of .PHONY).
 #  Command line target.
-#  Implicit rule search has not been done.
-#  Implicit/static pattern stem: ''
+#  Implicit rule search has been done.
 #  File does not exist.
-#  File has been updated.
-#  Needs to be updated (-q is set).
-# automatic
-# @ := all
-# automatic
-# % := 
-# automatic
-# * := 
-# automatic
-# + := 
-# automatic
-# | := 
-# automatic
-# < := 
-# automatic
-# ^ := 
-# automatic
-# ? := 
-# variable set hash-table stats:
-# Load=8/32=25%, Rehash=0, Collisions=3/12=25%
-#  recipe to execute (from 'Makefile', line 45):
-	@make all -C $(OS_DIR)
-
-.PHONY: build sdcard user fs run debug gdb disasm fat32-oscomp fat32 all
-#  Implicit rule search has not been done.
-#  Modification time never checked.
 #  File has not been updated.
 
-# Not a target:
-.SUFFIXES:
+.PHONY: build sdcard user fs run debug gdb disasm fat32-oscomp fat32
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
@@ -359,7 +335,7 @@ all:
 # Not a target:
 Makefile:
 #  Implicit rule search has been done.
-#  Last modified 2022-04-29 22:40:44.787652095
+#  Last modified 2022-04-29 22:37:06.401097701
 #  File has been updated.
 #  Successfully updated.
 
@@ -398,8 +374,9 @@ fat32-oscomp: user
 #  Implicit rule search has not been done.
 #  File does not exist.
 #  File has not been updated.
-#  recipe to execute (from 'Makefile', line 29):
-	cd oscomp && ./addoscompfile2fs.sh k210
+#  recipe to execute (from 'Makefile', line 26):
+	cd fat32-pack && ./createfs.sh
+	cd oscomp && ./addoscompfile2fs.sh qemu
 
 fs:
 #  Phony target (prerequisite of .PHONY).
@@ -424,7 +401,7 @@ disasm:
 	@make disasm -C $(OS_DIR)
 
 # files hash-table stats:
-# Load=15/1024=1%, Rehash=0, Collisions=2/40=5%
+# Load=15/1024=1%, Rehash=0, Collisions=2/37=5%
 # VPATH Search Paths
 
 # No 'vpath' search paths.
@@ -434,9 +411,9 @@ disasm:
 # strcache buffers: 1 (0) / strings = 31 / storage = 250 B / avg = 8 B
 # current buf: size = 8162 B / used = 250 B / count = 31 / avg = 8 B
 
-# strcache performance: lookups = 62 / hit rate = 50%
+# strcache performance: lookups = 58 / hit rate = 46%
 # hash-table stats:
-# Load=31/8192=0%, Rehash=0, Collisions=1/62=2%
-# Finished Make data base on Sat Apr 30 14:03:14 2022
+# Load=31/8192=0%, Rehash=0, Collisions=1/58=2%
+# Finished Make data base on Sat Apr 30 14:03:27 2022
 
  

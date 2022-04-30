@@ -7,23 +7,23 @@ IMG_DIR := $(USER_DIR)/target/$(TARGET)/$(MODE)
 OS_DIR := $(DIR)/kernel
 FS_IMG := $(IMG_DIR)/fs.img
 
-PLATFORM ?= k210
+PLATFORM ?= qemu
 
 build:
 	@make build -C $(OS_DIR)
 
-sdcard:
-	@make sdcard -C $(OS_DIR)
+# sdcard:
+# 	@make sdcard -C $(OS_DIR)
 
-fat32:
-	@make fat32-img -C $(OS_DIR)
+# fat32:
+# 	@make fat32-img -C $(OS_DIR)
 
 user:
 	@make build -C $(USER_DIR)
 
 fat32-oscomp: user
 ifeq ($(PLATFORM), qemu)
-	cd fat32-pack && ./createfs.sh
+	./createfs.sh
 	cd oscomp && ./addoscompfile2fs.sh qemu
 else
 	cd oscomp && ./addoscompfile2fs.sh k210
@@ -41,11 +41,12 @@ gdb:
 disasm:
 	@make disasm -C $(OS_DIR)
 
-all:
+all: user
 	@make all -C $(OS_DIR)
 
 clean:
+	@rm -rf ./fs
 	@make clean -C $(USER_DIR)
 	@make clean -C $(OS_DIR)
 
-.PHONY: build sdcard user fs run debug gdb disasm fat32-oscomp fat32 all clean
+.PHONY: build sdcard user fs run debug gdb disasm fat32-oscomp fat32 clean

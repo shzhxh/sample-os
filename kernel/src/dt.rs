@@ -36,15 +36,15 @@ fn fdt_get_timerfreq(fdt_ptr: *const u8) {
 }
 
 
-// #[cfg(not(feature = "k210"))]
-// fn fdt_get_timerfreq(fdt_ptr: *const u8) {
-//     let fdt: Fdt<'static> = unsafe { Fdt::from_ptr(fdt_ptr).unwrap() };
-//     let hart_id = hart_id();
-//     let current_cpu = fdt.cpus().find(|cpu| cpu.ids().first() == hart_id).unwrap();
-//     let timebase_frequency = current_cpu.timebase_frequency();
-//     TIMER_FREQ.store(timebase_frequency, Ordering::Release);
-//     println!("timer freq: {}", TIMER_FREQ.load(Ordering::Relaxed));
-// }
+#[cfg(feature = "qemu")]
+fn fdt_get_timerfreq(fdt_ptr: *const u8) {
+    let fdt: Fdt<'static> = unsafe { Fdt::from_ptr(fdt_ptr).unwrap() };
+    let hart_id = hart_id();
+    let current_cpu = fdt.cpus().find(|cpu| cpu.ids().first() == hart_id).unwrap();
+    let timebase_frequency = current_cpu.timebase_frequency();
+    TIMER_FREQ.store(timebase_frequency, Ordering::Release);
+    println!("timer freq: {}", TIMER_FREQ.load(Ordering::Relaxed));
+}
 
 
 fn fdt_get_ncpu(fdt_ptr: *const u8) {

@@ -78,7 +78,6 @@ build: switch-check $(KERNEL_BIN)
 # 	@sudo dd if=$(FS_IMG) of=$(SDCARD)
 
 kernel:
-	@rustup target add riscv64gc-unknown-none-elf
 	@cp src/linker-$(PLATFORM).ld src/linker.ld
 	cargo build --$(MODE) --features "platform-$(PLATFORM)" --features "$(SBI)"
 	@rm src/linker.ld
