@@ -6,7 +6,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Sun May  1 19:48:43 2022
+# Make data base, printed on Sun May  1 20:04:46 2022
 
 # Variables
 
@@ -77,7 +77,7 @@ MANAGERPID = 2640
 # environment
 CLUTTER_IM_MODULE = fcitx
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-a40a0dc8-5b6c-451d-a974-e618a2550942.sock
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-88338226-7520-42ec-ad0f-9d322c764dcd.sock
 # environment
 LC_NAME = zh_CN.UTF-8
 # environment
@@ -284,6 +284,7 @@ LANG = C
 # Directories
 
 # . (device 66310, inode 23074675): 17 files, no impossibilities.
+ 
 
 # 17 files, no impossibilities in 1 directories.
 
@@ -295,7 +296,6 @@ LANG = C
 
 user:
 #  Phony target (prerequisite of .PHONY).
- 
 #  Implicit rule search has not been done.
 #  Implicit/static pattern stem: ''
 #  File does not exist.
@@ -448,6 +448,6 @@ disasm:
 # strcache performance: lookups = 62 / hit rate = 48%
 # hash-table stats:
 # Load=32/8192=0%, Rehash=0, Collisions=1/62=2%
-# Finished Make data base on Sun May  1 19:48:43 2022
+# Finished Make data base on Sun May  1 20:04:46 2022
 
  
