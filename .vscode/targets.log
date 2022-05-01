@@ -6,7 +6,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Sat Apr 30 16:41:51 2022
+# Make data base, printed on Sun May  1 19:48:43 2022
 
 # Variables
 
@@ -49,7 +49,7 @@ VSCODE_NLS_CONFIG = {"locale":"en-us","availableLanguages":{},"_languagePackSupp
 # environment
 _ = /usr/bin/make
 # environment
-JOURNAL_STREAM = 8:66578
+JOURNAL_STREAM = 8:55116
 # environment
 XDG_CONFIG_DIRS = /etc/xdg/xdg-ubuntu:/etc/xdg
 # environment
@@ -73,11 +73,11 @@ DBUS_SESSION_BUS_ADDRESS = unix:path=/run/user/1000/bus
 # environment
 VSCODE_VERBOSE_LOGGING = true
 # environment
-MANAGERPID = 2559
+MANAGERPID = 2640
 # environment
 CLUTTER_IM_MODULE = fcitx
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-051a8547-ca63-4690-a546-cd5ae32d07f3.sock
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-a40a0dc8-5b6c-451d-a974-e618a2550942.sock
 # environment
 LC_NAME = zh_CN.UTF-8
 # environment
@@ -91,7 +91,7 @@ PATH = /home/weihuan/bin:/usr/local/cuda-11.6/bin:/home/weihuan/Tools/riscv64-un
 # environment
 GPG_AGENT_INFO = /run/user/1000/gnupg/S.gpg-agent:0:1
 # environment
-SESSION_MANAGER = local/weihuan-Lenovo-Legion-R9000P2021H:@/tmp/.ICE-unix/2779,unix/weihuan-Lenovo-Legion-R9000P2021H:/tmp/.ICE-unix/2779
+SESSION_MANAGER = local/weihuan-Lenovo-Legion-R9000P2021H:@/tmp/.ICE-unix/2863,unix/weihuan-Lenovo-Legion-R9000P2021H:/tmp/.ICE-unix/2863
 # environment
 XDG_RUNTIME_DIR = /run/user/1000
 # environment
@@ -101,7 +101,7 @@ VSCODE_LOG_STACK = false
 # environment
 ELECTRON_RUN_AS_NODE = 1
 # environment
-INVOCATION_ID = f002ae697c134dc5ac6b4564e0e60e2a
+INVOCATION_ID = 14dcaf1f69234583a633450339f43b95
 # default
 .FEATURES := target-specific order-only second-expansion else-if shortest-stem undefine oneshell archives jobserver output-sync check-symlink load
 # makefile (from 'Makefile', line 3)
@@ -113,7 +113,7 @@ XDG_SESSION_DESKTOP = ubuntu
 # environment
 SSH_AUTH_SOCK = /run/user/1000/keyring/ssh
 # environment
-GIO_LAUNCHED_DESKTOP_FILE_PID = 5723
+GIO_LAUNCHED_DESKTOP_FILE_PID = 114044
 # automatic
 %F = $(notdir $%)
 # environment
@@ -133,7 +133,7 @@ MODE := release
 # default
 .LOADED := 
 # environment
-SSH_AGENT_PID = 2737
+SSH_AGENT_PID = 2822
 # environment
 ORIGINAL_XDG_CURRENT_DESKTOP = ubuntu:GNOME
 # environment
@@ -269,7 +269,7 @@ GIO_LAUNCHED_DESKTOP_FILE = /usr/share/applications/code.desktop
 # environment
 CONDA_PREFIX = /home/weihuan/anaconda3
 # environment
-VSCODE_PID = 5723
+VSCODE_PID = 114044
 # environment
 _CE_CONDA = 
 # environment
@@ -278,7 +278,6 @@ LANG = C
 # Load=132/1024=13%, Rehash=0, Collisions=25/173=14%
 
 # Pattern-specific Variable Values
- 
 
 # No pattern-specific variable values.
 
@@ -296,6 +295,7 @@ LANG = C
 
 user:
 #  Phony target (prerequisite of .PHONY).
+ 
 #  Implicit rule search has not been done.
 #  Implicit/static pattern stem: ''
 #  File does not exist.
@@ -361,7 +361,7 @@ all: user
 # Not a target:
 Makefile:
 #  Implicit rule search has been done.
-#  Last modified 2022-04-30 16:15:51.269723989
+#  Last modified 2022-04-30 16:42:09.421473637
 #  File has been updated.
 #  Successfully updated.
 
@@ -387,7 +387,7 @@ build:
 #  Modification time never checked.
 #  File has not been updated.
 
-run:
+run: user
 #  Phony target (prerequisite of .PHONY).
 #  Implicit rule search has not been done.
 #  File does not exist.
@@ -435,7 +435,7 @@ disasm:
 	@make disasm -C $(OS_DIR)
 
 # files hash-table stats:
-# Load=16/1024=2%, Rehash=0, Collisions=2/42=5%
+# Load=16/1024=2%, Rehash=0, Collisions=2/43=5%
 # VPATH Search Paths
 
 # No 'vpath' search paths.
@@ -445,9 +445,9 @@ disasm:
 # strcache buffers: 1 (0) / strings = 32 / storage = 256 B / avg = 8 B
 # current buf: size = 8162 B / used = 256 B / count = 32 / avg = 8 B
 
-# strcache performance: lookups = 61 / hit rate = 47%
+# strcache performance: lookups = 62 / hit rate = 48%
 # hash-table stats:
-# Load=32/8192=0%, Rehash=0, Collisions=1/61=2%
-# Finished Make data base on Sat Apr 30 16:41:51 2022
+# Load=32/8192=0%, Rehash=0, Collisions=1/62=2%
+# Finished Make data base on Sun May  1 19:48:43 2022
 
  
