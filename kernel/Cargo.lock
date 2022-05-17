@@ -59,12 +59,6 @@ checksum = "14c189c53d098945499cdfa7ecc63567cf3886b3332b312a5b4585d8d3a6a610"
 
 [[package]]
 name = "cfg-if"
-version = "0.1.10"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4785bdd1c96b2a846b2bd7cc02e86b6b3dbf14e7e53446c4f54c92a361040822"
-
-[[package]]
-name = "cfg-if"
 version = "1.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "baf1de4339761588bc0619e3cbc0120ee582ebb74b53b4efbf79117bd2da40fd"
@@ -135,7 +129,7 @@ dependencies = [
  "k210-pac",
  "k210-soc",
  "lazy_static",
- "log 0.4.17",
+ "log",
  "owo-colors",
  "riscv 0.6.0",
  "spin 0.9.3",
@@ -165,18 +159,11 @@ dependencies = [
 
 [[package]]
 name = "log"
-version = "0.4.0"
-dependencies = [
- "cfg-if 0.1.10",
-]
-
-[[package]]
-name = "log"
 version = "0.4.17"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "abb12e687cfb44aa40f41fc3978ef76448f9b6038cad6aef4259d3c095a2382e"
 dependencies = [
- "cfg-if 1.0.0",
+ "cfg-if",
 ]
 
 [[package]]
@@ -246,7 +233,7 @@ dependencies = [
  "bare-metal",
  "bit_field",
  "bitflags",
- "log 0.4.0",
+ "log",
  "riscv-target",
 ]
 
@@ -269,7 +256,7 @@ dependencies = [
  "bare-metal",
  "bit_field",
  "bitflags",
- "log 0.4.17",
+ "log",
  "riscv-target",
 ]
 
@@ -375,7 +362,7 @@ version = "0.1.0"
 source = "git+https://github.com/rcore-os/virtio-drivers#f30d4268b7a58b2a7f5a4ce87d275e7bd2484acf"
 dependencies = [
  "bitflags",
- "log 0.4.17",
+ "log",
  "volatile",
 ]
 
