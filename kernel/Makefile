@@ -2,7 +2,7 @@
 # target toolchain
 TARGET := riscv64gc-unknown-none-elf
 MODE := release
-KERNEL_ELF := target/$(TARGET)/$(MODE)/os
+KERNEL_ELF := target/$(TARGET)/$(MODE)/kernel
 KERNEL_BIN := $(KERNEL_ELF).bin
 SDCARD := /dev/sda
 APPS := ../user/src/bin/*
@@ -19,13 +19,11 @@ BOOTLOADER := $(SBI_IMG)
 # LOG
 LOG ?= DEBUG
 
-# FS
-FS_IMG := ../user/target/$(TARGET)/$(MODE)/fs.img
 # FAT32
 ifeq ($(PLATFORM), k210)
 	FAT32_IMG := $(SDCARD)
 else
-	FAT32_IMG := ../fat32-pack/fat32.img
+	FAT32_IMG := ../fat32.img
 endif
 
 # KERNEL ENTRY
@@ -63,7 +61,7 @@ else ifeq ($(PLATFORM), k210)
 endif
 
 env:
-	@rustup target add riscv64imac-unknown-none-elf
+	@rustup target add riscv64gc-unknown-none-elf
 # @cargo install cargo-binutils --vers =0.3.3
 # @rustup component add rust-src
 # @rustup component add llvm-tools-preview
@@ -87,7 +85,6 @@ kernel:
 	@cp src/linker-$(PLATFORM).ld src/linker.ld
 	@cargo build --$(MODE) --features "platform-$(PLATFORM)" --features "$(SBI)"
 	@rm src/linker.ld
-# RUSTFLAGS="-C link-arg=-Tsrc/linker.ld -g"
 
 $(KERNEL_BIN): kernel
 	@$(OBJCOPY) $(KERNEL_ELF) --strip-all -O binary $@
@@ -96,7 +93,8 @@ run: build
 ifeq ($(PLATFORM),qemu)
 ifeq ($(SBI),opensbi)
 	@qemu-system-riscv64 \
-		-m 128M \
+		-m 512M \
+    	-cpu rv64 \
 		-machine virt \
 		-nographic \
 		-bios $(SBI_IMG) \
@@ -106,7 +104,8 @@ ifeq ($(SBI),opensbi)
 		-smp $(CPUS)
 else
 	@qemu-system-riscv64 \
-		-m 128M \
+		-m 512M \
+        -cpu rv64 \
 		-machine virt \
 		-nographic \
 		-bios $(SBI_IMG) \
@@ -127,7 +126,8 @@ endif
 
 debug: build
 	@qemu-system-riscv64 \
-		-m 128M \
+		-m 512M \
+        -cpu rv64 \
     	-machine virt \
     	-nographic \
     	-bios $(SBI_IMG) \
@@ -145,13 +145,14 @@ all: build
 	@cp $(KERNEL_BIN) $(SUBMIT_BIN)
 
 disasm: kernel
+	@ rm -f ../disasm.txt
 	@$(OBJDUMP) $(DISASM) $(KERNEL_ELF) | less >> ../disasm.txt
 
 gdb:
 	@gdb-multiarch \
-    -ex 'file target/riscv64gc-unknown-none-elf/release/os' \
-    -ex 'set arch riscv:rv64' \
-    -ex 'target remote localhost:1234'
+    	-ex 'file target/riscv64gc-unknown-none-elf/release/os' \
+    	-ex 'set arch riscv:rv64' \
+    	-ex 'target remote localhost:1234'
 
 clean:
 	@cargo clean

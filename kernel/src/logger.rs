@@ -4,12 +4,14 @@ use crate::opensbi::{impl_id, impl_version, spec_version};
 use crate::rustsbi::{impl_id, impl_version, spec_version};
 use crate::{
     cpu::hart_id,
-    dt::{CPU_NUMS, TIMER_FREQ},
+    dt::{CPU_NUMS, MEM_SIZE, MEM_START, TIMER_FREQ},
     timer::get_time,
     utils::{micros, time_parts},
 };
 use core::sync::atomic::{AtomicBool, AtomicUsize, Ordering};
 use log::*;
+use owo_colors::OwoColorize;
+use riscv::register::satp;
 
 pub struct ColorEscape(pub &'static str);
 
@@ -43,14 +45,13 @@ impl log::Log for MyLogger {
             return false;
         }
         let mut _mod_path = metadata.target();
-        _mod_path = if _mod_path == "MyOS" {
+        _mod_path = if _mod_path == "RunOS" {
             "kernel"
         } else {
-            _mod_path.trim_start_matches("MyOS::")
+            _mod_path.trim_start_matches("RunOS::")
         };
         true
     }
-
     fn log(&self, record: &log::Record) {
         if !self.enabled(record.metadata()) {
             return;
@@ -62,10 +63,10 @@ impl log::Log for MyLogger {
             .module_path_static()
             .or_else(|| record.module_path())
             .unwrap_or("<n/a>");
-        mod_path = if mod_path == "MyOS" {
+        mod_path = if mod_path == "RunOS" {
             "kernel"
         } else {
-            mod_path.trim_start_matches("MyOS::")
+            mod_path.trim_start_matches("RunOS::")
         };
         let hart_id = hart_id();
         let freq = TIMER_FREQ.load(core::sync::atomic::Ordering::Relaxed);
@@ -100,15 +101,15 @@ impl log::Log for MyLogger {
 pub fn init() {
     set_hart_filter(8);
     log::set_logger(&MyLogger).expect("failed to init logging");
-    // log::set_max_level(match option_env!("LOG") {
-    //     Some("ERROR") => LevelFilter::Error,
-    //     Some("WARN") => LevelFilter::Warn,
-    //     Some("INFO") => LevelFilter::Info,
-    //     Some("DEBUG") => LevelFilter::Debug,
-    //     Some("TRACE") => LevelFilter::Trace,
-    //     _ => LevelFilter::Off,
-    // });
-    log::set_max_level(LevelFilter::Info);
+    log::set_max_level(match option_env!("LOG") {
+        Some("ERROR") => LevelFilter::Error,
+        Some("WARN") => LevelFilter::Warn,
+        Some("INFO") => LevelFilter::Info,
+        Some("DEBUG") => LevelFilter::Debug,
+        Some("TRACE") => LevelFilter::Trace,
+        _ => LevelFilter::Off,
+    });
+    // log::set_max_level(LevelFilter::Debug);
 }
 
 fn set_hart_filter(hart_id: usize) {
@@ -122,11 +123,14 @@ fn set_hart_filter(hart_id: usize) {
 
 pub fn show_basic_info() {
     let n_cpus = CPU_NUMS.load(Ordering::Relaxed);
+    let mem_size = MEM_SIZE.load(Ordering::Relaxed);
+    let mem_start = MEM_START.load(Ordering::Relaxed);
     let timebase_frequency = TIMER_FREQ.load(Ordering::Relaxed);
-    log::info!("=== Machine Info ===");
+    log::info!("{}", "=== Machine Info ===".blue());
     log::info!(" Total CPUs: {}", n_cpus);
+    log::info!(" RAM: {} MiB @ {:#X}", mem_size, mem_start as usize);
     log::info!(" Timer Clock: {}Hz", timebase_frequency);
-    log::info!("=== SBI Implementation ===");
+    log::info!("{}", "=== SBI Implementation ===".blue());
     let (impl_major, impl_minor) = {
         let version = impl_version();
         (version >> 16, version & 0xFFFF)
@@ -138,12 +142,17 @@ pub fn show_basic_info() {
     log::info!(
         " Implementor: {:?} (version: {}.{})",
         impl_id(),
-        impl_major,
-        impl_minor
+        impl_major.green(),
+        impl_minor.green()
     );
-    log::info!(" Spec Version: {}.{}", spec_major, spec_minor);
-    log::info!("=== MyOS Info ===");
-    log::info!("MyOS version {}", env!("CARGO_PKG_VERSION"));
+    log::info!(
+        " Spec Version: {}.{}",
+        spec_major.green(),
+        spec_minor.green()
+    );
+    log::info!("{}", "=== RunOS Info ===".blue());
+    log::info!(" RunOS version {}", env!("CARGO_PKG_VERSION").green());
+    log::info!(" Paging scheme: {:?}", satp::read().mode());
     // log::info!(
     //     "Boot_Stack_0: [{:#X}, {:#X})",
     //     boot_stack as usize,

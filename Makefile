@@ -3,7 +3,9 @@ MODE := release
 DIR := $(shell pwd)
 FAT32_PACK_DIR := $(DIR)/fat32-pack
 USER_DIR := $(DIR)/user
-IMG_DIR := $(USER_DIR)/target/$(TARGET)/$(MODE)
+USER_TAR_DIR := $(USER_DIR)/target/$(TARGET)/$(MODE)
+OSCOMP_DIR := $(DIR)/oscomp
+OSCOMP_TAR_DIR := $(OSCOMP_DIR)/build/riscv64
 OS_DIR := $(DIR)/kernel
 FS_IMG := $(IMG_DIR)/fs.img
 
@@ -29,10 +31,10 @@ else
 	@cd oscomp && ./addoscompfile2fs.sh k210
 endif
 
-run: user
+run:
 	@make run -C $(OS_DIR)
 
-debug: fat32-oscomp
+debug:
 	@make debug -C $(OS_DIR)
 
 gdb:
@@ -45,6 +47,7 @@ all: user
 	@make all -C $(OS_DIR)
 
 clean:
+	@rm -f fat32.img disasm.txt
 	@rm -rf ./fs
 	@make clean -C $(USER_DIR)
 	@make clean -C $(OS_DIR)

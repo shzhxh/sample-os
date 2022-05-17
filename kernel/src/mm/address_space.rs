@@ -3,7 +3,9 @@ use super::{
     page_table::{PTEFlags, PageTable, PageTableEntry},
     section::{MapType, Permission, Section},
 };
-use crate::config::{MEMORY_END, PAGE_SIZE, TRAMPOLINE, TRAP_CONTEXT, USER_STACK_SIZE};
+use crate::config::{
+    MEMORY_END, PAGE_SIZE, TRAMPOLINE, TRAP_CONTEXT, USER_STACK_HIGH, USER_STACK_SIZE,
+};
 use crate::platform::MMIO;
 use alloc::string::{String, ToString};
 use alloc::vec::Vec;
@@ -23,7 +25,7 @@ extern "C" {
     fn ebss();
     fn ekernel();
     fn strampoline();
-    fn etrampoline();
+    // fn etrampoline();
 }
 
 lazy_static! {
@@ -42,6 +44,7 @@ pub fn kernel_translate(vpn: VirtPageNum) -> Option<PageTableEntry> {
 pub struct AddrSpace {
     pub page_table: PageTable,
     sections: Vec<Section>,
+    mmap_sections: Vec<Section>,
 }
 
 impl AddrSpace {
@@ -49,6 +52,7 @@ impl AddrSpace {
         Self {
             page_table: PageTable::new(),
             sections: Vec::new(),
+            mmap_sections: Vec::new(),
         }
     }
     pub fn get_token(&self) -> usize {
@@ -67,6 +71,18 @@ impl AddrSpace {
             None,
         );
     }
+    pub fn insert_mmap_area(
+        &mut self,
+        name: String,
+        start_va: VirtAddr,
+        end_va: VirtAddr,
+        permission: Permission,
+    ) {
+        self.push_mmap_section(
+            Section::new(name, start_va, end_va, MapType::Framed, permission),
+            None,
+        );
+    }
     pub fn remove_area_with_start_vpn(&mut self, start_vpn: VirtPageNum) {
         if let Some((idx, area)) = self
             .sections
@@ -78,10 +94,52 @@ impl AddrSpace {
             self.sections.remove(idx);
         }
     }
+    #[allow(unused)]
+    pub fn remove_area_with_name(&mut self, name: &str) {
+        if let Some((idx, area)) = self
+            .sections
+            .iter_mut()
+            .enumerate()
+            .find(|(_, area)| area.name == name)
+        {
+            area.unmap(&mut self.page_table);
+            self.sections.remove(idx);
+        }
+    }
+    pub fn remove_mmap_area_with_start_vpn(&mut self, start_vpn: VirtPageNum) {
+        if let Some((idx, area)) = self
+            .sections
+            .iter_mut()
+            .enumerate()
+            .find(|(_, area)| area.vpn_range.get_start() == start_vpn)
+        {
+            area.unmap(&mut self.page_table);
+            self.mmap_sections.remove(idx);
+        }
+    }
     fn push_section(&mut self, mut section: Section, data: Option<&[u8]>) {
         section.map(&mut self.page_table);
         if let Some(data) = data {
-            section.copy_data(&mut self.page_table, data);
+            section.copy_data(&mut self.page_table, data, 0);
+        }
+        self.sections.push(section);
+    }
+    fn push_mmap_section(&mut self, mut section: Section, data: Option<&[u8]>) {
+        section.map(&mut self.page_table);
+        if let Some(data) = data {
+            section.copy_data(&mut self.page_table, data, 0);
+        }
+        self.mmap_sections.push(section);
+    }
+    fn push_section_with_offset(
+        &mut self,
+        mut section: Section,
+        offset: usize,
+        data: Option<&[u8]>,
+    ) {
+        section.map(&mut self.page_table);
+        if let Some(data) = data {
+            section.copy_data(&mut self.page_table, data, offset);
         }
         self.sections.push(section);
     }
@@ -98,11 +156,17 @@ impl AddrSpace {
         // map trampoline
         kernel_space.map_trampoline();
         // map kernel sections
-        println!(".text [{:#x}, {:#x})", stext as usize, etext as usize);
-        println!(".trampoline [{:#x}, {:#x})", strampoline as usize, etrampoline as usize);
-        println!(".rodata [{:#x}, {:#x})", srodata as usize, erodata as usize);
-        println!(".data [{:#x}, {:#x})", sdata as usize, edata as usize);
-        println!(".bss [{:#x}, {:#x})", sbss_with_stack as usize, ebss as usize);
+        // println!(".text [{:#x}, {:#x})", stext as usize, etext as usize);
+        // println!(
+        //     ".trampoline [{:#x}, {:#x})",
+        //     strampoline as usize, etrampoline as usize
+        // );
+        // println!(".rodata [{:#x}, {:#x})", srodata as usize, erodata as usize);
+        // println!(".data [{:#x}, {:#x})", sdata as usize, edata as usize);
+        // println!(
+        //     ".bss [{:#x}, {:#x})",
+        //     sbss_with_stack as usize, ebss as usize
+        // );
         // println!("mapping .text section");
         kernel_space.push_section(
             Section::new(
@@ -172,12 +236,12 @@ impl AddrSpace {
             );
         }
         // unsafe { asm!("fence.i") }
-        println!("mapping kernel finish");
+        // println!("mapping kernel finish");
         kernel_space
     }
     /// Include sections in elf and trampoline and TrapContext and user stack,
     /// also returns user_sp and entry point.
-    pub fn create_user_space(elf_data: &[u8]) -> (Self, usize, usize) {
+    pub fn create_user_space(elf_data: &[u8]) -> (Self, usize, usize, usize) {
         // println!("create_user_space");
         let mut user_space = Self::new_empty();
         // map trampoline
@@ -188,6 +252,7 @@ impl AddrSpace {
         let magic = elf_header.pt1.magic;
         assert_eq!(magic, [0x7f, 0x45, 0x4c, 0x46], "invalid elf!");
         let ph_count = elf_header.pt2.ph_count();
+        // println!("ph_count: {}", ph_count);
         let mut max_end_vpn = VirtPageNum(0);
         for i in 0..ph_count {
             let ph = elf.program_header(i).unwrap();
@@ -197,9 +262,11 @@ impl AddrSpace {
                 let name = sect.get_name(&elf).unwrap();
                 // println!("name: {}", name);
                 let start_va: VirtAddr = (ph.virtual_addr() as usize).into();
-                // println!("start_va: 0x{:X}", usize::from(start_va));
+                // println!("start_va: {:#X}", usize::from(start_va));
                 let end_va: VirtAddr = ((ph.virtual_addr() + ph.mem_size()) as usize).into();
-                // println!("end_va: 0x{:X}", usize::from(end_va));
+                // println!("end_va: {:#X}", usize::from(end_va));
+                let offset = start_va.0 - start_va.floor().0 * PAGE_SIZE;
+                // println!("offset: {:#X}", offset);
                 let mut map_perm = Permission::U;
                 let ph_flags = ph.flags();
                 if ph_flags.is_read() {
@@ -211,6 +278,7 @@ impl AddrSpace {
                 if ph_flags.is_execute() {
                     map_perm |= Permission::X;
                 }
+                // println!("map_perm: {:#?}", map_perm);
                 let section = Section::new(
                     name.to_string(),
                     start_va,
@@ -224,20 +292,44 @@ impl AddrSpace {
                 // println!("ph file_size: 0x{:X}", ph.file_size());
                 // println!("ph mem_size: 0x{:X}", ph.mem_size());
                 // println!("");
-                user_space.push_section(
-                    section,
-                    Some(&elf.input[ph.offset() as usize..(ph.offset() + ph.file_size()) as usize]),
-                );
+                // user_space.push_section(
+                //     section,
+                //     Some(&elf.input[ph.offset() as usize..(ph.offset() + ph.file_size()) as usize]),
+                // );
+                if offset == 0 {
+                    user_space.push_section(
+                        section,
+                        Some(
+                            &elf.input
+                                [ph.offset() as usize..(ph.offset() + ph.file_size()) as usize],
+                        ),
+                    );
+                } else {
+                    user_space.push_section_with_offset(
+                        section,
+                        offset,
+                        Some(
+                            &elf.input
+                                [ph.offset() as usize..(ph.offset() + ph.file_size()) as usize],
+                        ),
+                    );
+                }
             }
         }
         // clear bss section
         user_space.clear_bss_pages();
-        // map user stack with U flags
+
         let max_end_va: VirtAddr = max_end_vpn.into();
-        let mut user_stack_bottom: usize = max_end_va.into();
-        // guard page
-        user_stack_bottom += PAGE_SIZE;
-        let user_stack_high = user_stack_bottom + USER_STACK_SIZE;
+        let mut heap_start: usize = max_end_va.into();
+        //guard page
+        heap_start += PAGE_SIZE;
+
+        // map user stack with U flags
+        // user stack is set just below the trap_cx
+        let user_stack_high = USER_STACK_HIGH;
+        let user_stack_bottom = user_stack_high - USER_STACK_SIZE;
+        // println!("user_stack_bottom: 0x{:X}", usize::from(user_stack_bottom));
+        // println!("user_stack_high: 0x{:X}", usize::from(user_stack_high));
         user_space.push_section(
             Section::new(
                 ".ustack".to_string(),
@@ -248,6 +340,7 @@ impl AddrSpace {
             ),
             None,
         );
+
         // map TrapContext
         user_space.push_section(
             Section::new(
@@ -262,6 +355,7 @@ impl AddrSpace {
         // unsafe { asm!("fence.i") }
         (
             user_space,
+            heap_start,
             user_stack_high,
             elf.header.pt2.entry_point() as usize,
         )
@@ -295,9 +389,21 @@ impl AddrSpace {
                     .copy_from_slice(src_ppn.get_bytes_array());
             }
         }
+        // copy data mmap_sections
+        for area in user_space.mmap_sections.iter() {
+            let new_area = Section::from_another(area);
+            addr_space.push_section(new_area, None);
+            // copy data from another space
+            for vpn in area.vpn_range {
+                let src_ppn = user_space.translate(vpn).unwrap().ppn();
+                let dst_ppn = addr_space.translate(vpn).unwrap().ppn();
+                dst_ppn
+                    .get_bytes_array()
+                    .copy_from_slice(src_ppn.get_bytes_array());
+            }
+        }
         addr_space
     }
-    #[allow(unused)]
     pub fn recycle_data_pages(&mut self) {
         self.sections.clear();
     }
@@ -307,6 +413,56 @@ impl AddrSpace {
             satp::write(satp);
             asm!("sfence.vma");
         }
+    }
+    // size 最终会按页对齐
+    pub fn alloc_heap_section(&mut self, heap_start: usize, size: usize) {
+        // heap_start 本身在task创建时已经按页对齐了
+        let start_va = heap_start.into();
+        let end_va = (heap_start + size).into();
+        self.insert_framed_area(
+            ".heap".to_string(),
+            start_va,
+            end_va,
+            Permission::R | Permission::W | Permission::U,
+        )
+    }
+    // size 最终会按页对齐
+    pub fn dealloc_heap_section(&mut self) {
+        if let Some((idx, area)) = self
+            .sections
+            .iter_mut()
+            .enumerate()
+            .find(|(_, area)| area.name == ".heap")
+        {
+            area.unmap(&mut self.page_table);
+            self.sections.remove(idx);
+        }
+    }
+    // return start_va usize, end_va usize
+    pub fn get_section_range(&self, name: &str) -> (usize, usize) {
+        let sect_iterator = self.sections.iter();
+        for sect in sect_iterator {
+            if sect.name == name {
+                return sect.get_section_range();
+            }
+        }
+        // NULL
+        return (0, 0);
+    }
+    // 如果存在要找的段就调整，不存在就啥都不做
+    pub fn modify_section_end(&mut self, name: &str, new_end_vpn: VirtPageNum) {
+        let sect_iterator = self.sections.iter_mut();
+        for sect in sect_iterator {
+            if sect.name == name {
+                sect.modify_section_end(&mut self.page_table, new_end_vpn);
+            }
+        }
+    }
+    // size 最终会按页对齐
+    pub fn create_mmap_section(&mut self, mmap_start: usize, size: usize, permission: Permission) {
+        let start_va = mmap_start.into();
+        let end_va = (mmap_start + size).into();
+        self.insert_mmap_area(".mmap".to_string(), start_va, end_va, permission)
     }
 }
 

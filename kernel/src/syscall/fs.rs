@@ -60,7 +60,7 @@ pub fn sys_read(fd: usize, buf: *const u8, len: usize) -> isize {
         if !file.readable() {
             return -1;
         }
-        // release current task PCB manually to avoid multi-borrow
+        // release current task PCB inner manually to avoid multi-borrow
         drop(inner);
         // release current task PCB manually to avoid Arc::strong_count grow
         // drop(task);
@@ -483,7 +483,7 @@ pub fn sys_unlinkat(fd: i32, path: *const u8, flags: u32) -> isize {
     let token = current_user_token();
     // 这里传入的地址为用户的虚地址，因此要使用用户的虚地址进行映射
     let path = translated_str(token, path);
-    let mut inner = task.acquire_inner_lock();
+    let inner = task.acquire_inner_lock();
 
     if let Some(file) = get_file_discpt(
         fd as isize,
