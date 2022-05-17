@@ -66,7 +66,7 @@ env:
 # @rustup component add rust-src
 # @rustup component add llvm-tools-preview
 
-build: env switch-check $(KERNEL_BIN)
+build: switch-check $(KERNEL_BIN)
 
 # fat32-img:
 # 	@cd ../fat32-pack && ./createfs.sh
@@ -83,7 +83,7 @@ build: env switch-check $(KERNEL_BIN)
 
 kernel:
 	@cp src/linker-$(PLATFORM).ld src/linker.ld
-	@cargo build --$(MODE) --features "platform-$(PLATFORM)" --features "$(SBI)"
+	@cargo build --$(MODE) --features "platform-$(PLATFORM)" --features "$(SBI)" --offline
 	@rm src/linker.ld
 
 $(KERNEL_BIN): kernel
