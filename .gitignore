@@ -16,3 +16,4 @@ myfat32/Cargo.lock
 myfat32/target/*
 tools/
 pushall.sh
+fat32.img
