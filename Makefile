@@ -43,8 +43,12 @@ gdb:
 disasm:
 	@make disasm -C $(OS_DIR)
 
-all: user
-	@make all -C $(OS_DIR)
+# all: user
+# 	@make all -C $(OS_DIR)
+
+all:
+	rm -f os.bin
+	cp os_1.bin os.bin
 
 clean:
 	@rm -f fat32.img disasm.txt

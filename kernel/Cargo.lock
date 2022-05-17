@@ -131,7 +131,7 @@ dependencies = [
  "lazy_static",
  "log",
  "owo-colors",
- "riscv 0.6.0",
+ "riscv 0.6.0 (git+https://github.com/rcore-os/riscv)",
  "spin 0.9.3",
  "virtio-drivers",
  "xmas-elf",
@@ -225,17 +225,6 @@ name = "regex-syntax"
 version = "0.6.25"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f497285884f3fcff424ffc933e56d7cbca511def0c9831a7f9b5f6153e3cc89b"
-
-[[package]]
-name = "riscv"
-version = "0.6.0"
-dependencies = [
- "bare-metal",
- "bit_field",
- "bitflags",
- "log",
- "riscv-target",
-]
 
 [[package]]
 name = "riscv"
