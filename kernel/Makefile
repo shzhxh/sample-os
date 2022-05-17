@@ -60,8 +60,8 @@ else ifeq ($(PLATFORM), k210)
 	@(which last-k210) || (rm -f last-qemu && touch last-k210 && make clean)
 endif
 
-env:
-	@rustup target add riscv64gc-unknown-none-elf
+# env:
+# 	@rustup target add riscv64gc-unknown-none-elf
 # @cargo install cargo-binutils --vers =0.3.3
 # @rustup component add rust-src
 # @rustup component add llvm-tools-preview
