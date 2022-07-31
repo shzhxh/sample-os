@@ -47,9 +47,11 @@ disasm:
 # 	@make all -C $(OS_DIR)
 
 all:
-	rm -f os.bin
-	cp os_1.bin os.bin
-
+	rm -f kernel-qemu
+	cp kernel-qemu1 kernel-qemu
+	rm -f sbi-qemu
+	cp sbi-qemu1 sbi-qemu
+	
 clean:
 	@rm -f fat32.img disasm.txt
 	@rm -rf ./fs
