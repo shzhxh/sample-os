@@ -93,7 +93,7 @@ run: build
 ifeq ($(PLATFORM),qemu)
 ifeq ($(SBI),opensbi)
 	@qemu-system-riscv64 \
-		-m 512M \
+		-m 17M \
     	-cpu rv64 \
 		-machine virt \
 		-nographic \
