@@ -11,6 +11,13 @@ FS_IMG := $(IMG_DIR)/fs.img
 
 PLATFORM ?= qemu
 
+.PHONY: all
+all:
+	rm -f kernel-qemu
+	cp kernel-qemu1 kernel-qemu
+	rm -f sbi-qemu
+	cp sbi-qemu1 sbi-qemu
+	
 build:
 	@make build -C $(OS_DIR)
 
@@ -46,12 +53,7 @@ disasm:
 # all: user
 # 	@make all -C $(OS_DIR)
 
-all:
-	rm -f kernel-qemu
-	cp kernel-qemu1 kernel-qemu
-	rm -f sbi-qemu
-	cp sbi-qemu1 sbi-qemu
-	
+
 clean:
 	@rm -f fat32.img disasm.txt
 	@rm -rf ./fs
